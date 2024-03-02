@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>Project Task Manager</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -16,7 +16,7 @@
             margin: 10px 0;
             border-radius: 5px;
             border: 2px solid #ddd;
-            width: calc(100% - 22px); /* Adjust width to account for padding and border */
+            width: calc(100% - 22px);
         }
         .task-item {
             background-color: #ffffff;
@@ -24,43 +24,22 @@
             margin-bottom: 10px;
             padding: 10px;
             border-radius: 10px;
-            cursor: text;
+            cursor: pointer;
         }
-        .task-item:hover {
+        .task-item:hover, .project-item:hover {
             border-style: solid;
         }
-        .task-item p {
+        .task-item p, .project-item p {
             margin: 0;
-            display: none;
         }
-        .task-item input {
-            display: none;
+        .task-item input, .task-item .project-name-input {
             width: 100%;
             box-sizing: border-box;
-        }
-        .task-item .save-btn {
-            display: none;
-            margin-top: 10px;
-        }
-        .project-label {
-            display: inline-block;
-            margin-top: 10px;
-            font-size: 0.8em;
-            color: #666666;
-        }
-        .project-select {
-            display: none;
-        }
-        .task-item.editing p,
-        .task-item.editing .project-select {
-            display: none;
-        }
-        .task-item.editing input,
-        .task-item.editing .save-btn,
-        .task-item.editing .project-select {
-            display: block;
+            margin-top: 5px;
         }
         .save-btn {
+            display: block;
+            margin-top: 10px;
             padding: 5px 10px;
             background-color: #007bff;
             color: white;
@@ -71,64 +50,87 @@
         .save-btn:hover {
             background-color: #0056b3;
         }
+        .project-container {
+            margin-top: 20px;
+        }
+        .project-title {
+            font-size: 1.2em;
+            margin: 0 0 10px 0;
+            padding: 5px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+        }
+        .tasks-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .task-box {
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const projects = new Set();
-            const tasks = [];
-
-            function addTask(taskName, projectName) {
-                const taskList = document.getElementById('taskList');
-                const taskItem = document.createElement('li');
-                taskItem.className = 'task-item';
-                taskItem.innerHTML = `
-                    <p>${taskName}</p>
-                    <input type="text" value="${taskName}" />
-                    <select class="project-select">${[...projects].map(p => `<option value="${p}">${p}</option>`)}</select>
-                    <span class="project-label">${projectName}</span>
-                    <button class="save-btn">Save</button>
-                `;
-                taskList.appendChild(taskItem);
-
-                taskItem.addEventListener('click', function() {
-                    this.classList.add('editing');
-                });
-
-                const saveBtn = taskItem.querySelector('.save-btn');
-                saveBtn.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                    const input = taskItem.querySelector('input[type="text"]');
-                    const select = taskItem.querySelector('.project-select');
-                    const p = taskItem.querySelector('p');
-                    const span = taskItem.querySelector('.project-label');
-                    p.textContent = input.value;
-                    span.textContent = select.value;
-                    taskItem.classList.remove('editing');
-                });
-            }
-
-            function createEmptyTask() {
-                addTask('', '');
-            }
-
-            document.getElementById('createTaskBtn').addEventListener('click', createEmptyTask);
-
-            // Placeholder for actual project creation logic
-            function createProject(projectName) {
-                if (!projects.has(projectName)) {
-                    projects.add(projectName);
-                }
-            }
-
-            // Initial call to create an empty task box
-            createEmptyTask();
-        });
-    </script>
 </head>
 <body>
     <button id="createTaskBtn">Create Task</button>
-    <ul id="taskList">
-        <!-- Tasks will be added here -->
-    </ul>
+    <div id="projectTasksContainer">
+        <!-- Project tasks will be displayed here -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tasks = [];
+
+            function displayTasks() {
+                const container = document.getElementById('projectTasksContainer');
+                container.innerHTML = ''; // Clear existing tasks
+
+                const projects = {};
+
+                tasks.forEach(task => {
+                    const { name, project } = task;
+                    if (!projects[project]) {
+                        projects[project] = [];
+                    }
+                    projects[project].push(name);
+                });
+
+                Object.keys(projects).forEach(project => {
+                    const projectDiv = document.createElement('div');
+                    projectDiv.className = 'project-container';
+
+                    const title = document.createElement('p');
+                    title.className = 'project-title';
+                    title.textContent = project || 'No Project';
+                    projectDiv.appendChild(title);
+
+                    const tasksContainer = document.createElement('div');
+                    tasksContainer.className = 'tasks-container';
+
+                    projects[project].forEach(taskName => {
+                        const taskDiv = document.createElement('div');
+                        taskDiv.className = 'task-box';
+                        taskDiv.textContent = taskName;
+                        tasksContainer.appendChild(taskDiv);
+                    });
+
+                    projectDiv.appendChild(tasksContainer);
+                    container.appendChild(projectDiv);
+                });
+            }
+
+            document.getElementById('createTaskBtn').addEventListener('click', function() {
+                const taskName = prompt('Enter a name for the task:');
+                const projectName = prompt('Enter a project name for this task:');
+                if (taskName) {
+                    tasks.push({ name: taskName, project: projectName });
+                    displayTasks();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
