@@ -3,10 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World App</title>
+    <title>Task Manager</title>
+    <script>
+        // Wait for the DOM to be loaded before attaching events
+        document.addEventListener('DOMContentLoaded', function() {
+            // Function to add a task
+            function addTask(taskName) {
+                const taskList = document.getElementById('taskList');
+                const taskItem = document.createElement('li');
+                taskItem.textContent = taskName;
+                taskList.appendChild(taskItem);
+            }
+
+            // Attach the event to the 'Create Task' button
+            document.getElementById('createTaskBtn').addEventListener('click', function() {
+                const taskName = prompt('Enter a name for the task:');
+                if (taskName) {
+                    addTask(taskName);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This is my first app on GitHub.</p>
+    <button id="createTaskBtn">Create Task</button>
+    <ul id="taskList">
+        <!-- Tasks will be added here -->
+    </ul>
 </body>
 </html>
