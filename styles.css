@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+.task-input-container {
+    margin-bottom: 20px;
+}
+input[type="text"] {
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+button {
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.project-container {
+    margin-bottom: 20px;
+}
+.project-title {
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    margin: 0 0 10px 0;
+}
+.tasks-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.task-box {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #eee;
+    cursor: grab;
+}
+/* Example project and task colors */
+.project-A .project-title { background-color: #007bff; }
+.project-A .task-box { background-color: #bbddff; }
+.project-B .project-title { background-color: #28a745; }
+.project-B .task-box { background-color: #a2f2bd; }
+/* Define additional project colors as needed */
