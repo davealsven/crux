@@ -4,16 +4,18 @@ body {
     background-color: #f4f4f4;
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
 }
 .task-input-container {
     width: 100%;
+    box-sizing: border-box;
     margin-bottom: 20px;
 }
 input[type="text"], button {
     padding: 10px;
-    margin: 0 10px 10px 0;
     border-radius: 5px;
     border: 1px solid #ccc;
+    margin-right: 10px;
 }
 button {
     border: none;
@@ -25,42 +27,33 @@ button:hover {
     background-color: #0056b3;
 }
 .project-container {
-    border: 3px solid; /* Color will be set per project */
+    width: 25%;
     padding: 15px;
     border-radius: 10px;
     margin: 10px;
-    width: calc(25% - 20px); /* Adjust based on margin */
     box-sizing: border-box;
+    background-color: #f0f0f0; /* Light grey background */
+    border: 3px solid #bbb; /* Darker grey border */
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
 }
 .project-title {
     font-size: 1.2em;
-    margin-bottom: 15px;
-    color: #fff; /* Color will be set per project */
+    margin: 0 0 15px 0;
+    color: #333; /* Dark text for readability */
+    width: 100%;
 }
 .task-box {
     background-color: #eee;
     padding: 10px;
     border-radius: 5px;
+    width: 100%; /* Make task boxes full width inside the project container */
+    box-sizing: border-box;
     margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
-
-/* Example Project Specific Styles - Adjust or add as needed */
-.project-A {
-    background-color: #e0f0ff; /* Light blue */
-    border-color: #007bff; /* Strong blue */
+.task-box:hover {
+    background-color: #e0e0e0;
 }
-.project-A .project-title {
-    color: #007bff;
-}
-
-.project-B {
-    background-color: #e9ffe8; /* Light green */
-    border-color: #28a745; /* Strong green */
-}
-.project-B .project-title {
-    color: #28a745;
-}
-
-/* Add more project-specific styles as needed */
