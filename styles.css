@@ -30,8 +30,7 @@ button:hover {
     border-radius: 10px;
     margin: 10px;
     box-sizing: border-box;
-    background-color: #e7f2fd;
-    border: 3px solid #0056b3;
+    background-color: #d0e2fd; /* Slightly darker shade for project boxes */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -42,7 +41,7 @@ button:hover {
     margin: 0 0 15px 0;
 }
 .task-box {
-    background-color: #eee;
+    background-color: #fff; /* Task backgrounds are white */
     padding: 10px;
     border-radius: 5px;
     width: 100%;
@@ -52,5 +51,5 @@ button:hover {
     transition: background-color 0.3s;
 }
 .task-box:hover {
-    background-color: #e0e0e0;
+    background-color: #f0f0f0;
 }
