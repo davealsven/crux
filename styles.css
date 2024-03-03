@@ -2,9 +2,6 @@ body {
     font-family: Arial, sans-serif;
     padding: 20px;
     background-color: #f4f4f4;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
 }
 .task-input-container {
     width: 100%;
@@ -27,28 +24,28 @@ button:hover {
     background-color: #0056b3;
 }
 .project-container {
-    min-width: 300px; /* Minimum width for project boxes! */
+    min-width: 300px;
     width: 25%;
     padding: 15px;
     border-radius: 10px;
     margin: 10px;
     box-sizing: border-box;
-    background-color: #e7f2fd; /* Light blue background for project boxes */
-    border: 3px solid #0056b3; /* Strong blue border */
+    background-color: #e7f2fd;
+    border: 3px solid #0056b3;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 .project-title {
     font-size: 1.2em;
-    color: #0056b3; /* Strong blue for project title */
+    color: #0056b3;
     margin: 0 0 15px 0;
 }
 .task-box {
     background-color: #eee;
     padding: 10px;
     border-radius: 5px;
-    width: 100%; /* Make task boxes full width inside the project container */
+    width: 100%;
     box-sizing: border-box;
     margin-bottom: 10px;
     cursor: pointer;
