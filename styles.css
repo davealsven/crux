@@ -27,22 +27,22 @@ button:hover {
     background-color: #0056b3;
 }
 .project-container {
+    min-width: 300px; /* Minimum width for project boxes */
     width: 25%;
     padding: 15px;
     border-radius: 10px;
     margin: 10px;
     box-sizing: border-box;
-    background-color: #f0f0f0; /* Light grey background */
-    border: 3px solid #bbb; /* Darker grey border */
+    background-color: #e7f2fd; /* Light blue background for project boxes */
+    border: 3px solid #0056b3; /* Strong blue border */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 .project-title {
     font-size: 1.2em;
+    color: #0056b3; /* Strong blue for project title */
     margin: 0 0 15px 0;
-    color: #333; /* Dark text for readability */
-    width: 100%;
 }
 .task-box {
     background-color: #eee;
