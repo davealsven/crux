@@ -53,3 +53,9 @@ button:hover {
 .task-box:hover {
     background-color: #f0f0f0;
 }
+/* Styles for the dependency information */
+.dependencies, .dependents {
+    font-size: 0.9em;
+    color: #555;
+    margin: 5px 0;
+}
