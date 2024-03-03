@@ -1,75 +1,54 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const addTaskBtn = document.getElementById('addTaskBtn');
-    const taskNameInput = document.getElementById('taskNameInput');
-    const projectNameInput = document.getElementById('projectNameInput');
-    const projectsContainer = document.getElementById('projectsContainer');
+    // Existing code to add projects and tasks...
 
-    const projectNamesMap = new Map(); // Maps lowercase project name to display name
-
-    addTaskBtn.addEventListener('click', function() {
-        const taskName = taskNameInput.value.trim();
-        let projectName = projectNameInput.value.trim();
-        const projectNameLower = projectName.toLowerCase();
-
-        if (!projectNamesMap.has(projectNameLower)) {
-            projectNamesMap.set(projectNameLower, projectName);
-        } else {
-            projectName = projectNamesMap.get(projectNameLower);
-        }
-
-        if (taskName && projectName) {
-            addTask(taskName, projectName);
-            taskNameInput.value = '';
-            projectNameInput.value = '';
-        } else {
-            alert('Please enter both a task name and a project name.');
-        }
-    });
-
-    function addTask(taskName, projectName) {
-        let projectContainer = document.querySelector(`[data-project-name="${projectName.toLowerCase()}"]`);
-        if (!projectContainer) {
-            projectContainer = document.createElement('div');
-            projectContainer.className = 'project-container';
-            projectContainer.setAttribute('data-project-name', projectName.toLowerCase());
-
-            const title = document.createElement('h2');
-            title.className = 'project-title';
-            title.textContent = projectName;
-            projectContainer.appendChild(title);
-
-            projectsContainer.appendChild(projectContainer);
-        }
-
-        const taskBox = document.createElement('div');
-        taskBox.className = 'task-box';
-        taskBox.setAttribute('draggable', true);
-        taskBox.textContent = taskName;
-
-        // Event listeners for drag and drop
-        taskBox.addEventListener('dragstart', handleDragStart);
-        taskBox.addEventListener('dragend', handleDragEnd);
-        
-        projectContainer.appendChild(taskBox);
+    function enableProjectDragAndDrop() {
+        const projectContainers = document.querySelectorAll('.project-container');
+        projectContainers.forEach(project => {
+            project.setAttribute('draggable', true);
+            project.addEventListener('dragstart', handleProjectDragStart);
+            project.addEventListener('dragover', handleProjectDragOver);
+            project.addEventListener('drop', handleProjectDrop);
+        });
     }
 
-    function handleDragStart(e) {
-        e.dataTransfer.setData('text/plain', e.target.textContent);
+    function handleProjectDragStart(e) {
+        e.dataTransfer.setData('text/plain', e.target.getAttribute('data-project-name'));
         this.classList.add('dragging');
     }
 
-    function handleDragEnd() {
-        this.classList.remove('dragging');
+    function handleProjectDragOver(e) {
+        e.preventDefault(); // Necessary to allow dropping
     }
 
-    document.addEventListener('dragover', function(e) {
+    function handleProjectDrop(e) {
         e.preventDefault();
-        const dragging = document.querySelector('.dragging');
-        if (e.target.className === 'task-box' && dragging) {
-            const targetProjectContainer = e.target.closest('.project-container');
-            if (targetProjectContainer) {
-                targetProjectContainer.appendChild(dragging);
+        const projectName = e.dataTransfer.getData('text/plain');
+        const draggedProject = document.querySelector(`.project-container[data-project-name="${projectName}"]`);
+        if (draggedProject && e.target.classList.contains('project-container')) {
+            const afterElement = getDragAfterElement(projectsContainer, e.clientY);
+            if (afterElement == null) {
+                projectsContainer.appendChild(draggedProject);
+            } else {
+                projectsContainer.insertBefore(draggedProject, afterElement);
             }
         }
-    });
+        enableProjectDragAndDrop(); // Re-enable drag and drop in case of DOM changes
+    }
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.project-container:not(.dragging)')];
+
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    // Call this function whenever a new project is added or the DOM is updated
+    enableProjectDragAndDrop();
 });
