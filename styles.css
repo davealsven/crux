@@ -27,7 +27,7 @@ button:hover {
     background-color: #0056b3;
 }
 .project-container {
-    min-width: 300px; /* Minimum width for project boxes */
+    min-width: 300px; /* Minimum width for project boxes! */
     width: 25%;
     padding: 15px;
     border-radius: 10px;

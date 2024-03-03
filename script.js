@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             taskNameInput.value = '';
             projectNameInput.value = '';
         } else {
-            alert('Please enter both a task name and a project name.');
+            alert('Please enter both a task name and a project name!');
         }
     });
 
