@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #createTaskBtn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #createTaskBtn:hover {
+            background-color: #0056b3;
+        }
+        #taskList {
+            list-style-type: none;
+            padding: 0;
+        }
+        .task-item {
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .task-item p {
+            margin: 0;
+        }
+        .project-label {
+            font-size: 0.8em;
+            color: #666666;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const projects = new Set();
+            const projectSelect = document.getElementById('projectSelect');
+
+            function addProjectOption(projectName) {
+                if (!projects.has(projectName)) {
+                    projects.add(projectName);
+                    const option = document.createElement('option');
+                    option.value = projectName;
+                    option.textContent = projectName;
+                    projectSelect.appendChild(option);
+                }
+            }
+
+            function addTask(taskName, projectName) {
+                addProjectOption(projectName);
+                const taskList = document.getElementById('taskList');
+                const taskItem = document.createElement('li');
+                taskItem.className = 'task-item';
+                taskItem.innerHTML = `<p>${taskName}</p><span class="project-label">${projectName}</span>`;
+                taskList.appendChild(taskItem);
+            }
+
+            document.getElementById('createTaskBtn').addEventListener('click', function() {
+                const taskName = prompt('Enter a name for the task:');
+                if (taskName) {
+                    const projectName = prompt('Enter a project name:');
+                    if (projectName) {
+                        addTask(taskName, projectName);
+                    }
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <button id="createTaskBtn">Create Task</button>
+    <select id="projectSelect">
+        <option value="">Select a project</option>
+    </select>
+    <ul id="taskList">
+        <!-- Tasks will be added here -->
+    </ul>
+</body>
+</html>

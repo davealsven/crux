@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .task-input, .project-input {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            width: calc(100% - 22px); /* Adjust width to account for padding and border */
+        }
+        .task-item {
+            background-color: #ffffff;
+            border: 2px dashed #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: text;
+        }
+        .task-item:hover {
+            border-style: solid;
+        }
+        .task-item p {
+            margin: 0;
+            display: none;
+        }
+        .task-item input {
+            display: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .task-item .save-btn {
+            display: none;
+            margin-top: 10px;
+        }
+        .project-label {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.8em;
+            color: #666666;
+        }
+        .project-select {
+            display: none;
+        }
+        .task-item.editing p,
+        .task-item.editing .project-select {
+            display: none;
+        }
+        .task-item.editing input,
+        .task-item.editing .save-btn,
+        .task-item.editing .project-select {
+            display: block;
+        }
+        .save-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .save-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const projects = new Set();
+            const tasks = [];
+
+            function addTask(taskName, projectName) {
+                const taskList = document.getElementById('taskList');
+                const taskItem = document.createElement('li');
+                taskItem.className = 'task-item';
+                taskItem.innerHTML = `
+                    <p>${taskName}</p>
+                    <input type="text" value="${taskName}" />
+                    <select class="project-select">${[...projects].map(p => `<option value="${p}">${p}</option>`)}</select>
+                    <span class="project-label">${projectName}</span>
+                    <button class="save-btn">Save</button>
+                `;
+                taskList.appendChild(taskItem);
+
+                taskItem.addEventListener('click', function() {
+                    this.classList.add('editing');
+                });
+
+                const saveBtn = taskItem.querySelector('.save-btn');
+                saveBtn.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                    const input = taskItem.querySelector('input[type="text"]');
+                    const select = taskItem.querySelector('.project-select');
+                    const p = taskItem.querySelector('p');
+                    const span = taskItem.querySelector('.project-label');
+                    p.textContent = input.value;
+                    span.textContent = select.value;
+                    taskItem.classList.remove('editing');
+                });
+            }
+
+            function createEmptyTask() {
+                addTask('', '');
+            }
+
+            document.getElementById('createTaskBtn').addEventListener('click', createEmptyTask);
+
+            // Placeholder for actual project creation logic
+            function createProject(projectName) {
+                if (!projects.has(projectName)) {
+                    projects.add(projectName);
+                }
+            }
+
+            // Initial call to create an empty task box
+            createEmptyTask();
+        });
+    </script>
+</head>
+<body>
+    <button id="createTaskBtn">Create Task</button>
+    <ul id="taskList">
+        <!-- Tasks will be added here -->
+    </ul>
+</body>
+</html>

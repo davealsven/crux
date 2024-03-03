@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .task-input-container {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .project-container {
+            margin-bottom: 20px;
+        }
+        .project-title {
+            padding: 10px;
+            border-radius: 5px;
+            color: white;
+            margin: 0 0 10px 0;
+        }
+        .tasks-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .task-box {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #eee;
+            cursor: grab;
+        }
+        /* Example project and task colors */
+        .project-A .project-title { background-color: #007bff; }
+        .project-A .task-box { background-color: #bbddff; }
+        .project-B .project-title { background-color: #28a745; }
+        .project-B .task-box { background-color: #a2f2bd; }
+        /* Define additional project colors as needed */
+    </style>
+</head>
+<body>
+<div class="task-input-container">
+    <input type="text" id="taskNameInput" placeholder="Task Name">
+    <input type="text" id="projectNameInput" placeholder="Project Name">
+    <button id="addTaskBtn">Add Task</button>
+</div>
+
+<div id="projectsContainer">
+    <!-- Projects and tasks will be displayed here -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addTaskBtn = document.getElementById('addTaskBtn');
+    const taskNameInput = document.getElementById('taskNameInput');
+    const projectNameInput = document.getElementById('projectNameInput');
+    const projectsContainer = document.getElementById('projectsContainer');
+
+    addTaskBtn.addEventListener('click', function() {
+        const taskName = taskNameInput.value.trim();
+        const projectName = projectNameInput.value.trim().replace(/\s+/g, '-');
+        if (taskName && projectName) {
+            addTask(taskName, projectName);
+            taskNameInput.value = '';
+            projectNameInput.value = '';
+        }
+    });
+
+    function addTask(taskName, projectName) {
+        let projectContainer = document.querySelector(`.project-container.${projectName}`);
+        if (!projectContainer) {
+            projectContainer = document.createElement('div');
+            projectContainer.className = `project-container ${projectName}`;
+            const title = document.createElement('p');
+            title.className = 'project-title';
+            title.textContent = projectName.replace(/-/g, ' ');
+            projectContainer.appendChild(title);
+
+            const tasksContainer = document.createElement('div');
+            tasksContainer.className = 'tasks-container';
+            projectContainer.appendChild(tasksContainer);
+
+            projectsContainer.appendChild(projectContainer);
+        }
+
+        const tasksContainer = projectContainer.querySelector('.tasks-container');
+        const taskBox = document.createElement('div');
+        taskBox.className = 'task-box';
+        taskBox.textContent = taskName;
+        taskBox.draggable = true;
+
+        taskBox.addEventListener('dragstart', function(e) {
+            e.dataTransfer.setData('text', taskName);
+            e.dataTransfer.effectAllowed = 'move';
+            this.classList.add('dragging');
+        });
+
+        tasksContainer.appendChild(taskBox);
+    }
+
+    document.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        const dragging = document.querySelector('.dragging');
+        if (dragging) {
+            const container = e.target.closest('.tasks-container');
+            if (container) {
+                container.appendChild(dragging);
+            }
+        }
+    });
+
+    document.addEventListener('dragend', function() {
+        const dragging = document.querySelector('.dragging');
+        if (dragging) {
+            dragging.classList.remove('dragging');
+        }
+    });
+});
+</script>
+</body>
+</html>
